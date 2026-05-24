@@ -275,7 +275,7 @@ async function loadDashboard() {
   try {
     const [pr, or] = await Promise.all([
       fetch(`${API}/api/products`).then(r => r.json()),
-      fetch(`${API}/api/orders`).
+      fetch(`${API}/api/products`).then(r => r.json()),
   } catch(e) {
     products = allProducts;
     orders = allOrders;
