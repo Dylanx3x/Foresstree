@@ -274,7 +274,7 @@ async function loadDashboard() {
   let products = [], orders = [];
   try {
     const [pr, or] = await Promise.all([
-      fetch(`${API}/products`).then(r => r.json()),
+      fetch(`${API}/api/products`).then(r => r.json()),
       fetch(`${API}/orders`).then(r => r.json()),
     ]);
     products = Array.isArray(pr) ? pr : [];
