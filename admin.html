@@ -255,7 +255,7 @@ function showPage(page) {
 // ===== SERVER CHECK =====
 async function checkServer() {
   try {
-    const res = await fetch('http://localhost:5000/');
+    const res = await fetch('https://foresstree.onrender.com/');
     if (res.ok) {
       serverOnline = true;
       document.getElementById('topbarStatus').innerHTML = '<span style="color:#27ae60">● Online</span>';
