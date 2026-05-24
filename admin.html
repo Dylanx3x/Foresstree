@@ -557,7 +557,7 @@ async function submitProduct(e) {
     const img = document.getElementById('p-image').files[0];
     if (img) formData.append('image', img);
 
-    const res = await fetch(`${API}/products`, {method:'POST', body:formData});
+    const res = await fetch(`${API}/api/products`, {method:'POST', body:formData});
     const data = await res.json();
     if (data.success) {
       showToast('Product added! ✅');
@@ -613,7 +613,7 @@ async function loadOrders() {
   const content = document.getElementById('pageContent');
   content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading orders...</p></div>';
   try {
-    const res = await fetch(`${API}/orders`);
+    const res = await fetch(`${API}/api/orders`);
     allOrders = await res.json();
   } catch(e) {
     content.innerHTML = `<div class="card"><div class="empty"><div class="icon">❌</div><p>Server offline। <strong>node server.js</strong> চালাও।</p></div></div>`;
