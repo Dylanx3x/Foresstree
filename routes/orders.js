@@ -1,12 +1,67 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
 
 // ===================================
-//  📦 ORDER MODEL
+//  📧 EMAIL SETUP
+// ===================================
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+async function sendOrderEmail(order) {
+  const itemList = order.items
+    .map(i => `  ${i.icon || '📦'} ${i.name} × ${i.quantity} = ৳${Math.round(i.price * i.quantity * 110).toLocaleString()}`)
+    .join('\n');
+
+  const totalBDT = Math.round(order.total * 110).toLocaleString();
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER, // নিজের Gmail-এ
+    subject: `🛍️ নতুন Order! — ${order.customer.firstName} — ৳${totalBDT}`,
+    text: `
+🎉 নতুন Order এসেছে!
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 Customer Info:
+   নাম: ${order.customer.firstName} ${order.customer.lastName || ''}
+   ফোন: ${order.customer.phone}
+   ${order.customer.altPhone ? `বিকল্প ফোন: ${order.customer.altPhone}` : ''}
+   ${order.customer.email ? `Email: ${order.customer.email}` : ''}
+
+📍 Delivery Address:
+   ${order.address.street}
+   ${order.address.thana ? order.address.thana + ', ' : ''}${order.address.district || ''}
+   ${order.address.division || ''}
+   ${order.address.note ? `নোট: ${order.address.note}` : ''}
+
+🛍️ Order Items:
+${itemList}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━
+💰 সর্বমোট: ৳${totalBDT}
+💳 Payment: ${order.paymentMethod}
+📋 Status: ${order.status}
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 Admin Panel: https://foresstree.com/admin.html
+    `.trim(),
+  };
+
+  await transporter.sendMail(mailOptions);
+  console.log('✅ Order email sent successfully');
+}
+
+// ===================================
+//  📦 ORDER SCHEMA
 // ===================================
 const orderSchema = new mongoose.Schema({
-  // Customer info
   customer: {
     firstName: { type: String, required: true },
     lastName: { type: String },
@@ -14,7 +69,6 @@ const orderSchema = new mongoose.Schema({
     altPhone: { type: String },
     email: { type: String },
   },
-  // Delivery address
   address: {
     street: { type: String, required: true },
     thana: { type: String },
@@ -22,7 +76,6 @@ const orderSchema = new mongoose.Schema({
     division: { type: String },
     note: { type: String },
   },
-  // Order items
   items: [{
     productId: { type: String },
     name: { type: String, required: true },
@@ -32,23 +85,19 @@ const orderSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
   }],
-  // Payment
   paymentMethod: { type: String, default: 'Cash on Delivery' },
   paymentStatus: { type: String, default: 'Pending', enum: ['Pending', 'Paid', 'Failed'] },
-  // Order details
   subtotal: { type: Number },
   shipping: { type: Number, default: 0 },
   tax: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
   total: { type: Number, required: true },
   couponCode: { type: String },
-  // Status
   status: {
     type: String,
     default: 'Processing',
     enum: ['Processing', 'Confirmed', 'Shipping', 'Delivered', 'Cancelled', 'Returned']
   },
-  // Timestamps
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
@@ -87,6 +136,14 @@ router.post('/', async (req, res) => {
   try {
     const order = new Order(req.body);
     await order.save();
+
+    // Email পাঠাও (error হলেও order save থাকবে)
+    try {
+      await sendOrderEmail(order);
+    } catch (emailErr) {
+      console.error('⚠️ Email error (order saved):', emailErr.message);
+    }
+
     res.json({ success: true, order });
   } catch (err) {
     res.status(500).json({ error: err.message });
