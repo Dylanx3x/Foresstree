@@ -7,8 +7,6 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Segoe UI', sans-serif; background: #f0f4f0; color: #1a1a1a; }
-
-/* ===== LAYOUT ===== */
 .admin-wrapper { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
 .sidebar { background: #0f2818; color: #fff; padding: 0; overflow-y: auto; position: sticky; top: 0; height: 100vh; }
 .sidebar-header { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,.1); }
@@ -20,19 +18,13 @@ body { font-family: 'Segoe UI', sans-serif; background: #f0f4f0; color: #1a1a1a;
 .menu-item.active { background: rgba(255,255,255,.12); color: #fff; border-left-color: #6fcf7f; }
 .menu-divider { height: 1px; background: rgba(255,255,255,.1); margin: 12px 16px; }
 .main-content { overflow-y: auto; }
-
-/* ===== TOPBAR ===== */
 .topbar { background: #fff; border-bottom: 1px solid #e0e8e0; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
 .topbar h1 { font-size: 1.2rem; font-weight: 800; }
 .topbar-actions { display: flex; gap: 10px; align-items: center; }
 .page-content { padding: 24px; }
-
-/* ===== CARDS ===== */
 .card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 1px solid #e0e8e0; }
 .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
 .card-title { font-size: 1rem; font-weight: 800; color: #1a6b2f; display: flex; align-items: center; gap: 8px; }
-
-/* ===== STATS ===== */
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .stat-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e0e8e0; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 6px rgba(0,0,0,.05); transition: .2s; }
 .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,.1); }
@@ -42,23 +34,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #f0f4f0; color: #1a1a1a;
 .stat-change { font-size: .74rem; margin-top: 4px; font-weight: 600; }
 .positive { color: #27ae60; }
 .negative { color: #e74c3c; }
-
-/* ===== FORM ===== */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-group.full { grid-column: 1 / -1; }
 .form-group label { font-size: .8rem; font-weight: 700; color: #5a6a5a; }
 .form-group input, .form-group select, .form-group textarea { padding: 10px 13px; border: 1.5px solid #dce8dc; border-radius: 9px; font-size: .9rem; transition: .2s; background: #f8faf8; font-family: inherit; }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1a6b2f; outline: none; background: #fff; box-shadow: 0 0 0 3px rgba(26,107,47,.1); }
-
-/* ===== UPLOAD ===== */
 .upload-area { border: 2.5px dashed #b0d0b0; border-radius: 12px; padding: 28px; text-align: center; cursor: pointer; transition: .2s; background: #f8faf8; position: relative; }
 .upload-area:hover { border-color: #1a6b2f; background: #f0f7f0; }
 .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 #imagePreview { margin-top: 12px; display: none; }
 #imagePreview img { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; border: 2px solid #dce8dc; }
-
-/* ===== BUTTONS ===== */
 .btn { padding: 10px 22px; border-radius: 9px; font-weight: 700; font-size: .88rem; cursor: pointer; transition: .2s; border: none; display: inline-flex; align-items: center; gap: 6px; font-family: inherit; }
 .btn-primary { background: #1a6b2f; color: #fff; }
 .btn-primary:hover { background: #114a20; }
@@ -74,8 +60,6 @@ body { font-family: 'Segoe UI', sans-serif; background: #f0f4f0; color: #1a1a1a;
 .btn-info-sm:hover { background: #1976d2; color: #fff; }
 .btn-warning-sm { background: #fff8e1; color: #f39c12; }
 .btn-warning-sm:hover { background: #f39c12; color: #fff; }
-
-/* ===== TABLE ===== */
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 th { background: #f0f7f0; padding: 11px 14px; text-align: left; font-size: .76rem; font-weight: 700; color: #5a6a5a; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
@@ -83,8 +67,6 @@ td { padding: 12px 14px; border-top: 1px solid #edf2ed; font-size: .87rem; verti
 tr:hover td { background: #f8faf8; }
 .product-img { width: 46px; height: 46px; object-fit: cover; border-radius: 8px; border: 1px solid #dce8dc; }
 .product-emoji { width: 46px; height: 46px; background: #f0f7f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.7rem; }
-
-/* ===== BADGES ===== */
 .badge { padding: 3px 10px; border-radius: 20px; font-size: .74rem; font-weight: 700; white-space: nowrap; }
 .badge-green { background: #e8f5e9; color: #27ae60; }
 .badge-red { background: #fde8e8; color: #e74c3c; }
@@ -92,14 +74,10 @@ tr:hover td { background: #f8faf8; }
 .badge-blue { background: #e3f2fd; color: #1976d2; }
 .badge-purple { background: #f3e5f5; color: #9c27b0; }
 .badge-gray { background: #f5f5f5; color: #666; }
-
-/* ===== SEARCH ===== */
 .search-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
 .search-row input { flex: 1; padding: 9px 14px; border: 1.5px solid #dce8dc; border-radius: 9px; font-size: .88rem; min-width: 180px; font-family: inherit; }
 .search-row input:focus { border-color: #1a6b2f; outline: none; }
 .search-row select { padding: 9px 14px; border: 1.5px solid #dce8dc; border-radius: 9px; font-size: .88rem; background: #fff; font-family: inherit; }
-
-/* ===== STATUS ===== */
 .server-status { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 9px; font-size: .84rem; font-weight: 600; margin-bottom: 20px; }
 .server-online { background: #e8f5e9; color: #27ae60; border: 1px solid #c8e6c9; }
 .server-offline { background: #fde8e8; color: #e74c3c; border: 1px solid #ffcdd2; }
@@ -107,16 +85,12 @@ tr:hover td { background: #f8faf8; }
 .dot-green { background: #27ae60; animation: pulse 2s infinite; }
 .dot-red { background: #e74c3c; }
 @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(39,174,96,.4)} 50%{box-shadow:0 0 0 5px rgba(39,174,96,0)} }
-
-/* ===== TOAST ===== */
 .toast-container { position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
 .toast { padding: 12px 20px; border-radius: 10px; color: #fff; font-weight: 600; font-size: .87rem; animation: slideIn .3s ease; box-shadow: 0 4px 16px rgba(0,0,0,.15); display: flex; align-items: center; gap: 8px; min-width: 240px; }
 .toast-success { background: #27ae60; }
 .toast-error { background: #e74c3c; }
 .toast-warning { background: #f39c12; }
 @keyframes slideIn { from{transform:translateX(110%);opacity:0} to{transform:none;opacity:1} }
-
-/* ===== MODAL ===== */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(4px); }
 .modal-overlay.show { display: flex; animation: fadeIn .25s ease; }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
@@ -124,15 +98,11 @@ tr:hover td { background: #f8faf8; }
 @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:none;opacity:1} }
 .modal-close { position: absolute; top: 14px; right: 14px; background: #f0f4f0; border: none; font-size: 1rem; color: #5a6a5a; padding: 6px 10px; border-radius: 8px; cursor: pointer; transition: .2s; }
 .modal-close:hover { background: #e74c3c; color: #fff; }
-
-/* ===== LOADING ===== */
 .loading { text-align: center; padding: 48px; color: #5a6a5a; }
 .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #dce8dc; border-top-color: #1a6b2f; border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 12px; }
 @keyframes spin { to{transform:rotate(360deg)} }
 .empty { text-align: center; padding: 48px; color: #5a6a5a; }
 .empty .icon { font-size: 3rem; margin-bottom: 12px; }
-
-/* ===== ORDER DETAIL ===== */
 .order-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
 .order-detail-box { background: #f8faf8; border-radius: 10px; padding: 14px; border: 1px solid #e0e8e0; }
 .order-detail-label { font-size: .75rem; font-weight: 700; color: #5a6a5a; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
@@ -140,15 +110,11 @@ tr:hover td { background: #f8faf8; }
 .order-item-row:last-child { border-bottom: none; }
 .order-summary-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: .9rem; }
 .order-summary-row.total { font-size: 1rem; font-weight: 800; color: #1a6b2f; border-top: 2px solid #e0e8e0; padding-top: 10px; margin-top: 4px; }
-
-/* ===== CHART ===== */
 .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 160px; padding-top: 20px; margin-top: 12px; }
 .chart-bar { flex: 1; border-radius: 6px 6px 0 0; position: relative; transition: .4s; min-width: 18px; }
 .chart-bar:hover { opacity: .8; }
 .chart-bar-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: .6rem; color: #5a6a5a; white-space: nowrap; }
 .chart-bar-value { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: .64rem; font-weight: 700; white-space: nowrap; }
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .admin-wrapper { grid-template-columns: 1fr; }
   .sidebar { display: none; position: fixed; z-index: 100; width: 240px; height: 100vh; }
@@ -162,15 +128,11 @@ tr:hover td { background: #f8faf8; }
 </style>
 </head>
 <body>
-
 <div class="toast-container" id="toasts"></div>
-
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modalContent"></div>
 </div>
-
 <div class="admin-wrapper">
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-logo"><span>🌳</span> Foresstree <small style="font-size:.55rem;background:rgba(255,255,255,.2);padding:2px 6px;border-radius:4px;margin-left:4px">ADMIN</small></div>
@@ -185,10 +147,7 @@ tr:hover td { background: #f8faf8; }
       <div class="menu-item" onclick="window.location.href='index.html'">🏪 View Store</div>
     </nav>
   </aside>
-
-  <!-- Main -->
   <div class="main-content">
-    <!-- Topbar -->
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:12px">
         <button class="mobile-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
@@ -199,35 +158,23 @@ tr:hover td { background: #f8faf8; }
         <button class="btn btn-primary" id="topbarBtn" onclick="showPage('products')" style="padding:8px 16px;font-size:.85rem">+ Add Product</button>
       </div>
     </div>
-
-    <!-- Page Content -->
     <div class="page-content" id="pageContent">
       <div class="loading"><div class="spinner"></div><p>Loading...</p></div>
     </div>
   </div>
 </div>
-
 <script>
 const API = 'https://foresstree.onrender.com';
 let allProducts = [], allOrders = [], currentPage = 'dashboard';
 let serverOnline = false;
 
-// ===== PAGE NAVIGATION =====
 function showPage(page) {
   currentPage = page;
   document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
   const menuEl = document.getElementById('menu-' + page);
   if (menuEl) menuEl.classList.add('active');
-
-  const titles = {
-    dashboard: '📊 Dashboard',
-    products: '📦 Products',
-    orders: '🛍️ Orders',
-    customers: '👥 Customers',
-    coupons: '🎟️ Coupons',
-  };
+  const titles = { dashboard:'📊 Dashboard', products:'📦 Products', orders:'🛍️ Orders', customers:'👥 Customers', coupons:'🎟️ Coupons' };
   document.getElementById('pageTitle').textContent = titles[page] || page;
-
   const topbarBtns = {
     products: { text: '➕ Add Product', action: 'showAddProductForm()' },
     orders: { text: '🔄 Refresh', action: 'loadOrders()' },
@@ -239,7 +186,6 @@ function showPage(page) {
   const topBtn = document.getElementById('topbarBtn');
   topBtn.textContent = btn.text;
   topBtn.onclick = new Function(btn.action);
-
   switch (page) {
     case 'dashboard': loadDashboard(); break;
     case 'products': loadProducts(); break;
@@ -247,15 +193,12 @@ function showPage(page) {
     case 'customers': loadCustomers(); break;
     case 'coupons': loadCoupons(); break;
   }
-
-  // Close mobile sidebar
   document.getElementById('sidebar').classList.remove('open');
 }
 
-// ===== SERVER CHECK =====
 async function checkServer() {
   try {
-    const res = await fetch('https://foresstree.onrender.com/');
+    const res = await fetch(`${API}/`);
     if (res.ok) {
       serverOnline = true;
       document.getElementById('topbarStatus').innerHTML = '<span style="color:#27ae60">● Online</span>';
@@ -266,65 +209,41 @@ async function checkServer() {
   }
 }
 
-// ===== DASHBOARD =====
 async function loadDashboard() {
   const content = document.getElementById('pageContent');
   content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading dashboard...</p></div>';
-
   let products = [], orders = [];
   try {
     const [pr, or] = await Promise.all([
       fetch(`${API}/api/products`).then(r => r.json()),
-      fetch(`${API}/api/products`).then(r => r.json()),
+      fetch(`${API}/api/orders`).then(r => r.json()),
+    ]);
+    products = Array.isArray(pr) ? pr : [];
+    orders = Array.isArray(or) ? or : [];
+    allProducts = products;
+    allOrders = orders;
   } catch(e) {
     products = allProducts;
     orders = allOrders;
   }
-
   const totalRevenue = orders.reduce((s, o) => s + (o.total || 0), 0);
-  const todayOrders = orders.filter(o => {
-    const d = new Date(o.createdAt);
-    const today = new Date();
-    return d.toDateString() === today.toDateString();
-  }).length;
-
+  const todayOrders = orders.filter(o => { const d = new Date(o.createdAt); const today = new Date(); return d.toDateString() === today.toDateString(); }).length;
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const chartValues = months.map((_, i) => {
-    return orders.filter(o => new Date(o.createdAt).getMonth() === i).reduce((s,o) => s + (o.total||0), 0);
-  });
+  const chartValues = months.map((_, i) => orders.filter(o => new Date(o.createdAt).getMonth() === i).reduce((s,o) => s + (o.total||0), 0));
   const maxVal = Math.max(...chartValues, 1000);
-
   const statusCounts = {Processing:0,Confirmed:0,Shipping:0,Delivered:0,Cancelled:0};
   orders.forEach(o => { if (statusCounts[o.status] !== undefined) statusCounts[o.status]++; });
-
   content.innerHTML = `
-    <!-- Server Status -->
     <div class="server-status ${serverOnline ? 'server-online' : 'server-offline'}">
       <span class="dot ${serverOnline ? 'dot-green' : 'dot-red'}"></span>
-      ${serverOnline ? '✅ Server online — সব data database এ save হচ্ছে' : '❌ Server offline — node server.js চালাও'}
+      ${serverOnline ? '✅ Server online — সব data database এ save হচ্ছে' : '❌ Server offline'}
     </div>
-
-    <!-- Stats -->
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon" style="background:#e8f5e9">💰</div>
-        <div><div class="stat-value">৳${Math.round(totalRevenue * 110).toLocaleString()}</div><div class="stat-label">Total Revenue</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:#e3f2fd">🛍️</div>
-        <div><div class="stat-value">${orders.length}</div><div class="stat-label">Total Orders</div><div class="stat-change positive">Today: ${todayOrders}</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:#fff3e0">📦</div>
-        <div><div class="stat-value">${products.length}</div><div class="stat-label">Products</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:#fce4ec">⏳</div>
-        <div><div class="stat-value">${statusCounts.Processing}</div><div class="stat-label">Pending Orders</div></div>
-      </div>
+      <div class="stat-card"><div class="stat-icon" style="background:#e8f5e9">💰</div><div><div class="stat-value">৳${Math.round(totalRevenue * 110).toLocaleString()}</div><div class="stat-label">Total Revenue</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#e3f2fd">🛍️</div><div><div class="stat-value">${orders.length}</div><div class="stat-label">Total Orders</div><div class="stat-change positive">Today: ${todayOrders}</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#fff3e0">📦</div><div><div class="stat-value">${products.length}</div><div class="stat-label">Products</div></div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#fce4ec">⏳</div><div><div class="stat-value">${statusCounts.Processing}</div><div class="stat-label">Pending Orders</div></div></div>
     </div>
-
-    <!-- Revenue Chart -->
     <div class="card">
       <div class="card-header"><div class="card-title">📈 Monthly Revenue (2026)</div></div>
       <div class="chart-bars">
@@ -335,8 +254,6 @@ async function loadDashboard() {
       </div>
       <div style="margin-top:32px"></div>
     </div>
-
-    <!-- Order Status + Recent Orders -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       <div class="card">
         <div class="card-title" style="margin-bottom:14px">📊 Order Status</div>
@@ -372,15 +289,14 @@ async function loadDashboard() {
   `;
 }
 
-// ===== PRODUCTS =====
 async function loadProducts() {
   const content = document.getElementById('pageContent');
   content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading products...</p></div>';
   try {
-    const res = await fetch(`${API}/products`);
+    const res = await fetch(`${API}/api/products`);
     allProducts = await res.json();
   } catch(e) {
-    content.innerHTML = `<div class="card"><div class="empty"><div class="icon">❌</div><p>Server connect হচ্ছে না। <strong>node server.js</strong> চালাও।</p></div></div>`;
+    content.innerHTML = `<div class="card"><div class="empty"><div class="icon">❌</div><p>Server connect হচ্ছে না।</p></div></div>`;
     return;
   }
   renderProductsPage();
@@ -390,9 +306,7 @@ function renderProductsPage() {
   const content = document.getElementById('pageContent');
   window._productMap = {};
   allProducts.forEach(p => { window._productMap[p._id] = p; });
-
   content.innerHTML = `
-    <!-- Add Product Form -->
     <div class="card" id="addProductCard">
       <div class="card-header">
         <div class="card-title">➕ Add New Product</div>
@@ -443,8 +357,6 @@ function renderProductsPage() {
         </div>
       </form>
     </div>
-
-    <!-- Products Table -->
     <div class="card">
       <div class="card-header">
         <div class="card-title">📦 All Products (${allProducts.length})</div>
@@ -468,18 +380,12 @@ function renderProductsPage() {
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr>
-          </thead>
-          <tbody id="productsBody">
-            ${renderProductRows(allProducts)}
-          </tbody>
+          <thead><tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="productsBody">${renderProductRows(allProducts)}</tbody>
         </table>
       </div>
     </div>
   `;
-
-  // Form submit
   document.getElementById('productForm').addEventListener('submit', submitProduct);
 }
 
@@ -500,7 +406,7 @@ function renderProductRows(products) {
         ${p.originalPrice > p.price ? `<div style="font-size:.75rem;color:#999;text-decoration:line-through">৳${Number(p.originalPrice).toLocaleString()}</div>` : ''}
       </td>
       <td><span style="font-weight:700;color:${p.stock==0?'#e74c3c':p.stock<=5?'#f39c12':'#27ae60'}">${p.stock}</span></td>
-      <td><span class="badge ${p.stock==0?'badge-red':p.stock<=5?'badge-yellow':'badge-green'}">${p.stock==0?'❌ Out':'p.stock<=5'?'⚠️ Low':'✅ In Stock'}</span></td>
+      <td><span class="badge ${p.stock==0?'badge-red':p.stock<=5?'badge-yellow':'badge-green'}">${p.stock==0?'❌ Out':p.stock<=5?'⚠️ Low':'✅ In Stock'}</span></td>
       <td>
         <button class="btn-sm btn-info-sm" onclick="viewProduct(window._productMap['${p._id}'])" style="margin-right:4px">👁️ View</button>
         <button class="btn-sm btn-danger-sm" onclick="deleteProduct('${p._id}','${p.name.replace(/'/g,"\\'")}')">🗑️</button>
@@ -551,14 +457,10 @@ async function submitProduct(e) {
     formData.append('freeShipping', document.getElementById('p-freeship').checked);
     const img = document.getElementById('p-image').files[0];
     if (img) formData.append('image', img);
-
     const res = await fetch(`${API}/api/products`, {method:'POST', body:formData});
     const data = await res.json();
-    if (data.success) {
-      showToast('Product added! ✅');
-      resetProductForm();
-      loadProducts();
-    } else { showToast('Error: ' + data.error, 'error'); }
+    if (data.success) { showToast('Product added! ✅'); resetProductForm(); loadProducts(); }
+    else { showToast('Error: ' + data.error, 'error'); }
   } catch(err) { showToast('Server error!', 'error'); }
   finally { btn.innerHTML = '➕ Add Product'; btn.disabled = false; }
 }
@@ -571,7 +473,7 @@ function resetProductForm() {
 async function deleteProduct(id, name) {
   if (!confirm(`"${name}" delete করবে?`)) return;
   try {
-    const res = await fetch(`${API}/products/${id}`, {method:'DELETE'});
+    const res = await fetch(`${API}/api/products/${id}`, {method:'DELETE'});
     const data = await res.json();
     if (data.success) { showToast(`"${name}" deleted!`, 'warning'); loadProducts(); }
     else { showToast('Delete failed', 'error'); }
@@ -603,7 +505,6 @@ function viewProduct(p) {
   document.getElementById('modalOverlay').classList.add('show');
 }
 
-// ===== ORDERS =====
 async function loadOrders() {
   const content = document.getElementById('pageContent');
   content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading orders...</p></div>';
@@ -611,7 +512,7 @@ async function loadOrders() {
     const res = await fetch(`${API}/api/orders`);
     allOrders = await res.json();
   } catch(e) {
-    content.innerHTML = `<div class="card"><div class="empty"><div class="icon">❌</div><p>Server offline। <strong>node server.js</strong> চালাও।</p></div></div>`;
+    content.innerHTML = `<div class="card"><div class="empty"><div class="icon">❌</div><p>Server offline।</p></div></div>`;
     return;
   }
   renderOrdersPage();
@@ -621,19 +522,13 @@ function renderOrdersPage() {
   const content = document.getElementById('pageContent');
   window._orderMap = {};
   allOrders.forEach(o => { window._orderMap[o._id] = o; });
-
   content.innerHTML = `
-    <!-- Stats -->
     <div class="stats-grid" style="grid-template-columns:repeat(6,1fr)">
       ${['Processing','Confirmed','Shipping','Delivered','Cancelled','Returned'].map(s => {
         const count = allOrders.filter(o => o.status === s).length;
-        const colors = {Processing:'#f39c12',Confirmed:'#27ae60',Shipping:'#1976d2',Delivered:'#1a6b2f',Cancelled:'#e74c3c',Returned:'#9c27b0'};
-        return `<div class="stat-card" style="padding:14px">
-          <div><div class="stat-value" style="font-size:1.4rem">${count}</div><div class="stat-label">${s}</div></div>
-        </div>`;
+        return `<div class="stat-card" style="padding:14px"><div><div class="stat-value" style="font-size:1.4rem">${count}</div><div class="stat-label">${s}</div></div></div>`;
       }).join('')}
     </div>
-
     <div class="card">
       <div class="card-header">
         <div class="card-title">🛍️ All Orders (${allOrders.length})</div>
@@ -659,21 +554,8 @@ function renderOrdersPage() {
       </div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Payment</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="ordersBody">
-            ${renderOrderRows(allOrders)}
-          </tbody>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="ordersBody">${renderOrderRows(allOrders)}</tbody>
         </table>
       </div>
     </div>
@@ -706,9 +588,7 @@ function renderOrderRows(orders) {
           ${['Processing','Confirmed','Shipping','Delivered','Cancelled','Returned'].map(s => `<option value="${s}" ${o.status===s?'selected':''}>${s}</option>`).join('')}
         </select>
       </td>
-      <td>
-        <button class="btn-sm btn-info-sm" onclick="viewOrder(window._orderMap['${o._id}'])">👁️ View</button>
-      </td>
+      <td><button class="btn-sm btn-info-sm" onclick="viewOrder(window._orderMap['${o._id}'])">👁️ View</button></td>
     </tr>`;
   }).join('');
 }
@@ -718,8 +598,7 @@ function filterOrders() {
   const status = document.getElementById('orderStatusFilter').value;
   const payment = document.getElementById('orderPaymentFilter').value;
   const filtered = allOrders.filter(o => {
-    const matchQ = !q || (o.customer?.firstName||'').toLowerCase().includes(q) ||
-      (o.customer?.phone||'').includes(q) || (o._id||'').toLowerCase().includes(q);
+    const matchQ = !q || (o.customer?.firstName||'').toLowerCase().includes(q) || (o.customer?.phone||'').includes(q) || (o._id||'').toLowerCase().includes(q);
     const matchStatus = !status || o.status === status;
     const matchPayment = !payment || (o.paymentMethod||'').includes(payment);
     return matchQ && matchStatus && matchPayment;
@@ -727,10 +606,9 @@ function filterOrders() {
   document.getElementById('ordersBody').innerHTML = renderOrderRows(filtered);
 }
 
-// ✅ Update order status
 async function updateOrderStatus(id, status, selectEl) {
   try {
-    const res = await fetch(`${API}/orders/${id}/status`, {
+    const res = await fetch(`${API}/api/orders/${id}/status`, {
       method: 'PATCH',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({status}),
@@ -738,10 +616,8 @@ async function updateOrderStatus(id, status, selectEl) {
     const data = await res.json();
     if (data.success) {
       showToast(`Status → ${status} ✅`);
-      // Update local data
       const order = allOrders.find(o => o._id === id);
       if (order) order.status = status;
-      // Update select styling
       const statusColors = {Processing:'badge-yellow',Confirmed:'badge-green',Shipping:'badge-blue',Delivered:'badge-green',Cancelled:'badge-red',Returned:'badge-purple'};
       selectEl.className = `badge ${statusColors[status]||'badge-gray'}`;
       selectEl.style.cssText = 'border:none;font-weight:700;cursor:pointer;font-size:.74rem;padding:3px 8px;border-radius:20px';
@@ -749,7 +625,6 @@ async function updateOrderStatus(id, status, selectEl) {
   } catch { showToast('Server error!', 'error'); }
 }
 
-// ✅ View order details
 function viewOrder(o) {
   if (!o) return;
   const date = o.createdAt ? new Date(o.createdAt).toLocaleString('en-BD') : 'N/A';
@@ -757,7 +632,6 @@ function viewOrder(o) {
     <button class="modal-close" onclick="closeModal()">✕</button>
     <h2 style="margin-bottom:4px">📦 Order Details</h2>
     <div style="font-family:monospace;font-size:.8rem;color:#5a6a5a;margin-bottom:16px">ID: ${o._id}</div>
-
     <div class="order-detail-grid">
       <div class="order-detail-box">
         <div class="order-detail-label">👤 Customer</div>
@@ -775,30 +649,23 @@ function viewOrder(o) {
         </div>
       </div>
     </div>
-
     <div style="margin-bottom:14px">
       <div class="order-detail-label" style="margin-bottom:8px">🛍️ Ordered Items</div>
       ${o.items?.map(item => `<div class="order-item-row">
         <span style="font-size:1.4rem">${item.image ? `<img src="${item.image}" style="width:36px;height:36px;object-fit:cover;border-radius:6px">` : item.icon||'📦'}</span>
-        <div style="flex:1">
-          <div style="font-weight:700">${item.name}</div>
-          <div style="font-size:.78rem;color:#5a6a5a">${item.category||''}</div>
-        </div>
+        <div style="flex:1"><div style="font-weight:700">${item.name}</div><div style="font-size:.78rem;color:#5a6a5a">${item.category||''}</div></div>
         <div style="text-align:right">
           <div style="font-size:.82rem;color:#5a6a5a">৳${Math.round(item.price*110).toLocaleString()} × ${item.quantity}</div>
           <div style="font-weight:700;color:#1a6b2f">৳${Math.round(item.price*item.quantity*110).toLocaleString()}</div>
         </div>
       </div>`).join('') || '<p style="color:#5a6a5a">No items</p>'}
     </div>
-
     <div style="background:#f8faf8;border-radius:10px;padding:14px;margin-bottom:14px">
       <div class="order-summary-row"><span>Subtotal</span><span>৳${Math.round((o.subtotal||0)*110).toLocaleString()}</span></div>
-      ${o.discount ? `<div class="order-summary-row" style="color:#27ae60"><span>Discount</span><span>−৳${Math.round(o.discount*110).toLocaleString()}</span></div>` : ''}
       <div class="order-summary-row"><span>Shipping</span><span>${o.shipping===0?'<span style="color:#27ae60">FREE</span>':'৳'+Math.round((o.shipping||0)*110).toLocaleString()}</span></div>
       <div class="order-summary-row"><span>VAT (5%)</span><span>৳${Math.round((o.tax||0)*110).toLocaleString()}</span></div>
       <div class="order-summary-row total"><span>Total</span><span>৳${Math.round((o.total||0)*110).toLocaleString()}</span></div>
     </div>
-
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
       <div class="order-detail-box">
         <div class="order-detail-label">💳 Payment</div>
@@ -815,7 +682,6 @@ function viewOrder(o) {
         </div>
       </div>
     </div>
-
     <div style="display:flex;gap:8px">
       <button class="btn btn-primary" style="flex:1" onclick="updateOrderStatus('${o._id}',document.getElementById('modalStatusSelect').value,{className:'',style:{cssText:''}});showToast('Status updated!');closeModal();loadOrders()">✅ Update Status</button>
       <button class="btn" style="background:#f0f4f0;color:#5a6a5a;font-weight:700" onclick="closeModal()">Close</button>
@@ -824,40 +690,28 @@ function viewOrder(o) {
   document.getElementById('modalOverlay').classList.add('show');
 }
 
-// ===== CUSTOMERS =====
 async function loadCustomers() {
   const content = document.getElementById('pageContent');
   content.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading...</p></div>';
-
   let orders = allOrders;
   try {
     if (!orders.length) {
-      const res = await fetch(`${API}/orders`);
+      const res = await fetch(`${API}/api/orders`);
       orders = await res.json();
       allOrders = orders;
     }
   } catch {}
-
-  // Group orders by phone
   const customerMap = {};
   orders.forEach(o => {
     const phone = o.customer?.phone || 'unknown';
     if (!customerMap[phone]) {
-      customerMap[phone] = {
-        name: `${o.customer?.firstName||''} ${o.customer?.lastName||''}`.trim(),
-        phone, orders: 0, totalSpent: 0, lastOrder: o.createdAt,
-        address: `${o.address?.district||''}, ${o.address?.division||''}`,
-      };
+      customerMap[phone] = { name: `${o.customer?.firstName||''} ${o.customer?.lastName||''}`.trim(), phone, orders: 0, totalSpent: 0, lastOrder: o.createdAt, address: `${o.address?.district||''}, ${o.address?.division||''}` };
     }
     customerMap[phone].orders++;
     customerMap[phone].totalSpent += o.total || 0;
-    if (new Date(o.createdAt) > new Date(customerMap[phone].lastOrder)) {
-      customerMap[phone].lastOrder = o.createdAt;
-    }
+    if (new Date(o.createdAt) > new Date(customerMap[phone].lastOrder)) customerMap[phone].lastOrder = o.createdAt;
   });
-
   const customers = Object.values(customerMap).sort((a,b) => b.totalSpent - a.totalSpent);
-
   content.innerHTML = `
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-icon" style="background:#e3f2fd">👥</div><div><div class="stat-value">${customers.length}</div><div class="stat-label">Total Customers</div></div></div>
@@ -872,12 +726,10 @@ async function loadCustomers() {
           <thead><tr><th>Customer</th><th>Phone</th><th>Address</th><th>Orders</th><th>Total Spent</th><th>Last Order</th></tr></thead>
           <tbody>
             ${customers.length ? customers.map((c,i) => `<tr>
-              <td>
-                <div style="display:flex;align-items:center;gap:10px">
-                  <div style="width:36px;height:36px;background:linear-gradient(135deg,#1a6b2f,#2d9e4f);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0">${c.name[0]||'?'}</div>
-                  <div><div style="font-weight:700">${c.name||'Unknown'}</div><span class="badge badge-green" style="font-size:.7rem">#${i+1}</span></div>
-                </div>
-              </td>
+              <td><div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:linear-gradient(135deg,#1a6b2f,#2d9e4f);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;flex-shrink:0">${c.name[0]||'?'}</div>
+                <div><div style="font-weight:700">${c.name||'Unknown'}</div><span class="badge badge-green" style="font-size:.7rem">#${i+1}</span></div>
+              </div></td>
               <td style="font-weight:600">${c.phone}</td>
               <td style="font-size:.85rem;color:#5a6a5a">${c.address}</td>
               <td><span style="font-weight:800;font-size:1rem">${c.orders}</span></td>
@@ -891,7 +743,6 @@ async function loadCustomers() {
   `;
 }
 
-// ===== COUPONS =====
 const coupons = [
   {code:'SAVE10',discount:'10%',type:'Percentage',status:'Active'},
   {code:'FLAT500',discount:'৳500',type:'Fixed Amount',status:'Active'},
@@ -935,11 +786,8 @@ function loadCoupons() {
 }
 
 function showAddCouponModal() { showPage('coupons'); }
-
-// ===== MODAL =====
 function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
 
-// ===== TOAST =====
 function showToast(msg, type = 'success') {
   const container = document.getElementById('toasts');
   const t = document.createElement('div');
@@ -949,7 +797,6 @@ function showToast(msg, type = 'success') {
   setTimeout(() => { t.style.animation = 'slideIn .3s reverse forwards'; setTimeout(()=>t.remove(), 300); }, 3500);
 }
 
-// ===== INIT =====
 window.onload = async () => {
   await checkServer();
   loadDashboard();
