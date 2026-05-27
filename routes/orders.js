@@ -1,68 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-// ===================================
-//  📧 EMAIL SETUP
-// ===================================
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendOrderEmail(order) {
   const itemList = order.items
-    .map(i => `  ${i.icon || '📦'} ${i.name} × ${i.quantity} = ৳${Math.round(i.price * i.quantity * 110).toLocaleString()}`)
+    .map(i => `${i.icon||'📦'} ${i.name} × ${i.quantity} = ৳${Math.round(i.price*i.quantity*110).toLocaleString()}`)
     .join('\n');
 
-  const totalBDT = Math.round(order.total * 110).toLocaleString();
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: process.env.EMAIL_USER, // নিজের Gmail-এ
-    subject: `🛍️ নতুন Order! — ${order.customer.firstName} — ৳${totalBDT}`,
+  await resend.emails.send({
+    from: 'onboarding@resend.dev',
+    to: process.env.EMAIL_USER,
+    subject: `🛍️ নতুন Order! — ${order.customer.firstName} — ৳${Math.round(order.total*110).toLocaleString()}`,
     text: `
 🎉 নতুন Order এসেছে!
-━━━━━━━━━━━━━━━━━━━━━━━━━
 
-👤 Customer Info:
-   নাম: ${order.customer.firstName} ${order.customer.lastName || ''}
-   ফোন: ${order.customer.phone}
-   ${order.customer.altPhone ? `বিকল্প ফোন: ${order.customer.altPhone}` : ''}
-   ${order.customer.email ? `Email: ${order.customer.email}` : ''}
+👤 Customer: ${order.customer.firstName} ${order.customer.lastName||''}
+📞 Phone: ${order.customer.phone}
+📍 Address: ${order.address.street}, ${order.address.thana}, ${order.address.district}
 
-📍 Delivery Address:
-   ${order.address.street}
-   ${order.address.thana ? order.address.thana + ', ' : ''}${order.address.district || ''}
-   ${order.address.division || ''}
-   ${order.address.note ? `নোট: ${order.address.note}` : ''}
-
-🛍️ Order Items:
+🛍️ Items:
 ${itemList}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━
-💰 সর্বমোট: ৳${totalBDT}
+💰 Total: ৳${Math.round(order.total*110).toLocaleString()}
 💳 Payment: ${order.paymentMethod}
-📋 Status: ${order.status}
-━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔗 Admin Panel: https://foresstree.com/admin.html
+🔗 Admin: https://foresstree.com/admin.html
     `.trim(),
-  };
-
-  await transporter.sendMail(mailOptions);
-  console.log('✅ Order email sent successfully');
+  });
 }
 
-// ===================================
-//  📦 ORDER SCHEMA
-// ===================================
 const orderSchema = new mongoose.Schema({
   customer: {
     firstName: { type: String, required: true },
@@ -88,7 +57,7 @@ const orderSchema = new mongoose.Schema({
     quantity: { type: Number, required: true },
   }],
   paymentMethod: { type: String, default: 'Cash on Delivery' },
-  paymentStatus: { type: String, default: 'Pending', enum: ['Pending', 'Paid', 'Failed'] },
+  paymentStatus: { type: String, default: 'Pending', enum: ['Pending','Paid','Failed'] },
   subtotal: { type: Number },
   shipping: { type: Number, default: 0 },
   tax: { type: Number, default: 0 },
@@ -98,7 +67,7 @@ const orderSchema = new mongoose.Schema({
   status: {
     type: String,
     default: 'Processing',
-    enum: ['Processing', 'Confirmed', 'Shipping', 'Delivered', 'Cancelled', 'Returned']
+    enum: ['Processing','Confirmed','Shipping','Delivered','Cancelled','Returned']
   },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
@@ -106,9 +75,6 @@ const orderSchema = new mongoose.Schema({
 
 const Order = mongoose.model('Order', orderSchema);
 
-// ===================================
-//  📋 GET ALL ORDERS
-// ===================================
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.find().sort({ createdAt: -1 });
@@ -118,9 +84,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ===================================
-//  📋 GET SINGLE ORDER
-// ===================================
 router.get('/:id', async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -131,37 +94,28 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// ===================================
-//  ➕ CREATE NEW ORDER
-// ===================================
 router.post('/', async (req, res) => {
   try {
     const order = new Order(req.body);
     await order.save();
-
-    // Email পাঠাও (error হলেও order save থাকবে)
     try {
       await sendOrderEmail(order);
+      console.log('✅ Email sent!');
     } catch (emailErr) {
-      console.error('⚠️ Email error (order saved):', emailErr.message);
+      console.error('⚠️ Email error:', emailErr.message);
     }
-
     res.json({ success: true, order });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ===================================
-//  ✏️ UPDATE ORDER STATUS
-// ===================================
 router.patch('/:id/status', async (req, res) => {
   try {
     const { status, paymentStatus } = req.body;
     const update = { updatedAt: Date.now() };
     if (status) update.status = status;
     if (paymentStatus) update.paymentStatus = paymentStatus;
-
     const order = await Order.findByIdAndUpdate(req.params.id, update, { new: true });
     if (!order) return res.status(404).json({ error: 'Order not found' });
     res.json({ success: true, order });
@@ -170,9 +124,6 @@ router.patch('/:id/status', async (req, res) => {
   }
 });
 
-// ===================================
-//  🗑️ DELETE ORDER
-// ===================================
 router.delete('/:id', async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
