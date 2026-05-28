@@ -38,11 +38,11 @@ app.post('/api/admin/login', (req, res) => {
 const Product = require('./models/Product');
 app.get('/sitemap.xml', async (req, res) => {
   try {
-    const products = await Product.find({}, '_id updatedAt');
+    const products = await Product.find({}, '_id createdAt');
     
     const urls = products.map(p => {
-      const lastmod = p.updatedAt
-        ? new Date(p.updatedAt).toISOString().split('T')[0]
+      const lastmod = p.createdAt
+        ? new Date(p.createdAt).toISOString().split('T')[0]
         : new Date().toISOString().split('T')[0];
       return `
   <url>
