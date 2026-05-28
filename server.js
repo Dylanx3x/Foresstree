@@ -40,11 +40,16 @@ app.get('/sitemap.xml', async (req, res) => {
   try {
     const products = await Product.find({}, '_id updatedAt');
     
-    const urls = products.map(p => `
+    const urls = products.map(p => {
+      const lastmod = p.updatedAt
+        ? new Date(p.updatedAt).toISOString().split('T')[0]
+        : new Date().toISOString().split('T')[0];
+      return `
   <url>
     <loc>https://www.foresstree.com/product/${p._id}</loc>
-    <lastmod>${new Date(p.updatedAt).toISOString().split('T')[0]}</lastmod>
-  </url>`).join('');
+    <lastmod>${lastmod}</lastmod>
+  </url>`;
+    }).join('');
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
