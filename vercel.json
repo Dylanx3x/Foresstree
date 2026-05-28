@@ -1,8 +1,9 @@
 {
-  "rewrites": [
+  "redirects": [
     {
       "source": "/sitemap.xml",
-      "destination": "https://foresstree.onrender.com/sitemap.xml"
+      "destination": "https://foresstree.onrender.com/sitemap.xml",
+      "permanent": true
     }
   ]
 }
