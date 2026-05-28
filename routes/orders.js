@@ -11,7 +11,7 @@ async function sendOrderEmail(order) {
     .join('\n');
 
   await resend.emails.send({
-    from: 'onboarding@resend.dev',
+    from: 'orders@foresstree.com',
     to: process.env.EMAIL_USER,
     subject: `🛍️ নতুন Order! — ${order.customer.firstName} — ৳${Math.round(order.total*110).toLocaleString()}`,
     text: `
