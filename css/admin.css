@@ -51,8 +51,8 @@ body { font-family: 'Segoe UI', sans-serif; background: #f0f4f0; color: #1a1a1a;
 .btn-success-sm:hover { background: #27ae60; color: #fff; }
 .btn-info-sm { background: #e3f2fd; color: #1976d2; }
 .btn-info-sm:hover { background: #1976d2; color: #fff; }
-.btn-warning-sm { background: #fff8e1; color: #f39c12; }
-.btn-warning-sm:hover { background: #f39c12; color: #fff; }
+.btn-warning-sm { background: #fff3e0; color: #e65100; border: 1px solid #ffcc80; padding: 6px 12px; border-radius: 7px; font-size: .78rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: .2s; }
+.btn-warning-sm:hover { background: #f39c12; color: #fff; border-color: #f39c12; }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; }
 th { background: #f0f7f0; padding: 11px 14px; text-align: left; font-size: .76rem; font-weight: 700; color: #5a6a5a; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
@@ -117,23 +117,4 @@ tr:hover td { background: #f8faf8; }
   .order-detail-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .mobile-toggle { display: inline-flex; }
-}
-
-
-
-/* এই CSS টুকু তোমার admin.css এর শেষে যোগ করো */
-
-.btn-warning-sm {
-  background: #fff3e0;
-  color: #e67e22;
-  border: 1px solid #f39c12;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: .78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background .2s;
-}
-.btn-warning-sm:hover {
-  background: #ffe0b2;
 }

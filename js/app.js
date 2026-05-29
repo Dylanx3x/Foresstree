@@ -36,10 +36,23 @@ const App = {
     {code:'WELCOME',discount:15,type:'percent',active:true},
   ],
 
+  // ✅ FIX 1: 5 সেকেন্ড timeout + loading status text + server ping
   async init() {
+    const ls = document.getElementById('loadingScreen');
+    const lsText = ls ? ls.querySelector('p') : null;
+
+    if (lsText) lsText.textContent = 'Connecting to server...';
+
     try {
-      const res = await fetch(`${API}/products`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+      const res = await fetch(`${API}/products`, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (lsText) lsText.textContent = 'Loading products...';
       const dbProducts = await res.json();
+
       if (Array.isArray(dbProducts) && dbProducts.length > 0) {
         this.products = dbProducts.map((p, i) => ({
           id: p._id, name: p.name, category: p.category,
@@ -55,9 +68,12 @@ const App = {
           freeShipping: p.freeShipping === 'true' || p.freeShipping === true || Number(p.price) > 45,
         }));
       } else {
+        if (lsText) lsText.textContent = 'Loading local data...';
         this.generateProducts();
       }
     } catch (e) {
+      // ✅ FIX 2: timeout বা error হলে সাথে সাথে local data দেখাও
+      if (lsText) lsText.textContent = 'Loading local data...';
       this.generateProducts();
     }
 
@@ -75,13 +91,20 @@ const App = {
     const savedWish = localStorage.getItem('foresstree-wishlist');
     if (savedWish) { try { this.state.wishlist = JSON.parse(savedWish); } catch(e){} }
 
-    const ls = document.getElementById('loadingScreen');
     if (ls) { ls.style.opacity = '0'; ls.style.transition = '.5s'; setTimeout(() => ls.style.display = 'none', 500); }
 
     this.render();
     this.startSlider();
     this.startFlashTimer();
     this.setupBackToTop();
+    this.startServerPing(); // ✅ FIX 3: server জাগিয়ে রাখো
+  },
+
+  // ✅ FIX 3: প্রতি 10 মিনিটে server ping করো যাতে ঘুমাতে না পারে
+  startServerPing() {
+    setInterval(() => {
+      fetch(`${API}/products`, { method: 'HEAD' }).catch(() => {});
+    }, 10 * 60 * 1000);
   },
 
   setupBackToTop() {
