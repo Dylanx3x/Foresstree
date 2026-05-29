@@ -166,61 +166,101 @@ async function loadProducts() {
   renderProductsPage();
 }
 
+// ✅ Product form HTML — Add ও Edit দুটোর জন্যই ব্যবহার হবে
+function getProductFormHTML(p = null) {
+  const isEdit = !!p;
+  return `
+    <div class="card" id="addProductCard">
+      <div class="card-header">
+        <div class="card-title">${isEdit ? '✏️ Edit Product' : '➕ Add New Product'}</div>
+        <button class="btn-sm btn-info-sm" onclick="document.getElementById('addProductCard').style.display='none'">Hide Form</button>
+      </div>
+      <form id="productForm">
+        ${isEdit ? `<input type="hidden" id="p-edit-id" value="${p._id}">` : ''}
+        <div class="form-grid">
+          <div class="form-group"><label>Product Name *</label><input type="text" id="p-name" placeholder="e.g. Wireless Earbuds" required value="${isEdit ? p.name : ''}"></div>
+          <div class="form-group"><label>Category *</label>
+            <select id="p-category" required>
+              <option value="">Select Category</option>
+              ${['electronics','fashion','home','sports','books','beauty','toys','food','auto','health'].map(c =>
+                `<option value="${c}" ${isEdit && p.category===c ? 'selected':''}>${c.charAt(0).toUpperCase()+c.slice(1)}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div class="form-group"><label>Sale Price (৳) *</label><input type="number" id="p-price" placeholder="1500" required min="0" value="${isEdit ? p.price : ''}"></div>
+          <div class="form-group"><label>Original Price (৳)</label><input type="number" id="p-original" placeholder="2000" min="0" value="${isEdit ? (p.originalPrice||'') : ''}"></div>
+          <div class="form-group"><label>Stock Quantity *</label><input type="number" id="p-stock" placeholder="50" required min="0" value="${isEdit ? p.stock : ''}"></div>
+          <div class="form-group"><label>Emoji Icon</label><input type="text" id="p-icon" placeholder="📦" maxlength="4" value="${isEdit ? (p.icon||'📦') : ''}"></div>
+          <div class="form-group full"><label>Description</label><textarea id="p-desc" rows="2" placeholder="Product description...">${isEdit ? (p.description||'') : ''}</textarea></div>
+          <div class="form-group full" style="display:flex;gap:20px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:6px;font-size:.87rem;font-weight:600;cursor:pointer"><input type="checkbox" id="p-featured" ${isEdit && (p.isFeatured===true||p.isFeatured==='true') ? 'checked':''}> ⭐ Featured</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:.87rem;font-weight:600;cursor:pointer"><input type="checkbox" id="p-new" ${isEdit && (p.isNew===true||p.isNew==='true') ? 'checked':''}> 🆕 New Arrival</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:.87rem;font-weight:600;cursor:pointer"><input type="checkbox" id="p-freeship" ${isEdit && (p.freeShipping===true||p.freeShipping==='true') ? 'checked':''}> 🚚 Free Shipping</label>
+          </div>
+
+          <!-- ✅ Multiple Images Upload -->
+          <div class="form-group full">
+            <label>📸 Product Images — সর্বোচ্চ ৫টা ছবি (JPG, PNG, WEBP)</label>
+            ${isEdit && (p.images?.length || p.image) ? `
+              <div id="existingImages" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                ${(p.images?.length ? p.images : [{url:p.image}]).map((img,i) =>
+                  `<div style="position:relative">
+                    <img src="${img.url}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #e0e8e0">
+                    <span style="position:absolute;top:-6px;right:-6px;background:#e74c3c;color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.7rem;cursor:pointer" onclick="this.parentElement.remove()">✕</span>
+                  </div>`
+                ).join('')}
+                <div style="font-size:.78rem;color:#5a6a5a;align-self:center">নতুন ছবি দিলে পুরনোগুলো replace হবে</div>
+              </div>
+            ` : ''}
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('p-images').click()" style="cursor:pointer">
+              <input type="file" id="p-images" accept="image/*" multiple style="display:none" onchange="previewImages(this)">
+              <div style="font-size:2rem;margin-bottom:6px">📸</div>
+              <p style="color:#5a6a5a;font-size:.88rem">Click করো বা ছবি drag করো (একসাথে একাধিক সিলেক্ট করতে পারো)</p>
+              <p style="color:#1a6b2f;font-weight:700;font-size:.82rem">JPG, PNG, WEBP — Max 5MB প্রতিটা</p>
+            </div>
+            <div id="imagesPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+          </div>
+
+          <!-- ✅ Video Upload -->
+          <div class="form-group full">
+            <label>🎬 Product Video (optional — MP4, Max 100MB)</label>
+            ${isEdit && p.video ? `
+              <div style="margin-bottom:10px">
+                <video src="${p.video}" controls style="width:100%;max-height:200px;border-radius:10px;border:2px solid #e0e8e0"></video>
+                <div style="font-size:.78rem;color:#5a6a5a;margin-top:4px">নতুন video দিলে পুরনোটা replace হবে</div>
+              </div>
+            ` : ''}
+            <div class="upload-area" id="videoUploadArea" onclick="document.getElementById('p-video').click()" style="cursor:pointer">
+              <input type="file" id="p-video" accept="video/mp4,video/webm" style="display:none" onchange="previewVideo(this)">
+              <div style="font-size:2rem;margin-bottom:6px">🎬</div>
+              <p style="color:#5a6a5a;font-size:.88rem">Click করো বা video drag করো</p>
+              <p style="color:#1a6b2f;font-weight:700;font-size:.82rem">MP4, WEBM — Max 100MB</p>
+            </div>
+            <div id="videoPreviewBox" style="display:none;margin-top:8px">
+              <video id="videoPreview" controls style="width:100%;max-height:220px;border-radius:10px;border:2px solid #e0e8e0"></video>
+              <button type="button" onclick="clearVideo()" style="display:block;margin-top:6px;background:none;border:none;color:#e74c3c;font-size:.82rem;font-weight:700;cursor:pointer">✕ Remove Video</button>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px">
+          <button type="submit" class="btn btn-primary" id="addProductBtn">
+            ${isEdit ? '💾 Save Changes' : '➕ Add Product'}
+          </button>
+          <button type="button" class="btn" style="background:#f0f4f0;color:#5a6a5a" onclick="${isEdit ? 'loadProducts()' : 'resetProductForm()'}">
+            ${isEdit ? '❌ Cancel' : '🔄 Reset'}
+          </button>
+        </div>
+      </form>
+    </div>
+  `;
+}
+
 function renderProductsPage() {
   const content = document.getElementById('pageContent');
   window._productMap = {};
   allProducts.forEach(p => { window._productMap[p._id] = p; });
   content.innerHTML = `
-    <div class="card" id="addProductCard">
-      <div class="card-header">
-        <div class="card-title">➕ Add New Product</div>
-        <button class="btn-sm btn-info-sm" onclick="document.getElementById('addProductCard').style.display='none'">Hide Form</button>
-      </div>
-      <form id="productForm">
-        <div class="form-grid">
-          <div class="form-group"><label>Product Name *</label><input type="text" id="p-name" placeholder="e.g. Wireless Earbuds" required></div>
-          <div class="form-group"><label>Category *</label>
-            <select id="p-category" required>
-              <option value="">Select Category</option>
-              <option value="electronics">📱 Electronics</option>
-              <option value="fashion">👔 Fashion</option>
-              <option value="home">🏡 Home & Garden</option>
-              <option value="sports">⚽ Sports</option>
-              <option value="books">📚 Books</option>
-              <option value="beauty">💄 Beauty</option>
-              <option value="toys">🧸 Toys</option>
-              <option value="food">🥑 Groceries</option>
-              <option value="auto">🚗 Automotive</option>
-              <option value="health">💊 Health</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Sale Price (৳) *</label><input type="number" id="p-price" placeholder="1500" required min="0"></div>
-          <div class="form-group"><label>Original Price (৳)</label><input type="number" id="p-original" placeholder="2000" min="0"></div>
-          <div class="form-group"><label>Stock Quantity *</label><input type="number" id="p-stock" placeholder="50" required min="0"></div>
-          <div class="form-group"><label>Emoji Icon</label><input type="text" id="p-icon" placeholder="📦" maxlength="4"></div>
-          <div class="form-group full"><label>Description</label><textarea id="p-desc" rows="2" placeholder="Product description..."></textarea></div>
-          <div class="form-group full" style="display:flex;gap:20px;flex-wrap:wrap">
-            <label style="display:flex;align-items:center;gap:6px;font-size:.87rem;font-weight:600;cursor:pointer"><input type="checkbox" id="p-featured"> ⭐ Featured</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:.87rem;font-weight:600;cursor:pointer"><input type="checkbox" id="p-new"> 🆕 New Arrival</label>
-            <label style="display:flex;align-items:center;gap:6px;font-size:.87rem;font-weight:600;cursor:pointer"><input type="checkbox" id="p-freeship"> 🚚 Free Shipping</label>
-          </div>
-          <div class="form-group full">
-            <label>Product Image (optional)</label>
-            <div class="upload-area" id="uploadArea">
-              <input type="file" id="p-image" accept="image/*" onchange="previewImg(this)">
-              <div style="font-size:2rem;margin-bottom:6px">📸</div>
-              <p style="color:#5a6a5a;font-size:.88rem">Click করো বা ছবি drag করো</p>
-              <p style="color:#1a6b2f;font-weight:700;font-size:.82rem">JPG, PNG, WEBP — Max 5MB</p>
-            </div>
-            <div id="imagePreview"><img id="previewImg" src="" alt="Preview"><button type="button" onclick="clearImg()" style="display:block;margin-top:6px;background:none;border:none;color:#e74c3c;font-size:.82rem;font-weight:700;cursor:pointer">✕ Remove</button></div>
-          </div>
-        </div>
-        <div style="margin-top:16px;display:flex;gap:10px">
-          <button type="submit" class="btn btn-primary" id="addProductBtn">➕ Add Product</button>
-          <button type="button" class="btn" style="background:#f0f4f0;color:#5a6a5a" onclick="resetProductForm()">🔄 Reset</button>
-        </div>
-      </form>
-    </div>
+    ${getProductFormHTML()}
     <div class="card">
       <div class="card-header">
         <div class="card-title">📦 All Products (${allProducts.length})</div>
@@ -230,16 +270,9 @@ function renderProductsPage() {
         <input type="text" id="prodSearch" placeholder="🔍 Search products..." oninput="filterProds()">
         <select id="prodCatFilter" onchange="filterProds()">
           <option value="">All Categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="fashion">Fashion</option>
-          <option value="home">Home</option>
-          <option value="sports">Sports</option>
-          <option value="books">Books</option>
-          <option value="beauty">Beauty</option>
-          <option value="toys">Toys</option>
-          <option value="food">Food</option>
-          <option value="auto">Auto</option>
-          <option value="health">Health</option>
+          ${['electronics','fashion','home','sports','books','beauty','toys','food','auto','health'].map(c =>
+            `<option value="${c}">${c.charAt(0).toUpperCase()+c.slice(1)}</option>`
+          ).join('')}
         </select>
       </div>
       <div class="table-wrap">
@@ -255,9 +288,18 @@ function renderProductsPage() {
 
 function renderProductRows(products) {
   if (!products.length) return `<tr><td colspan="7"><div class="empty"><div class="icon">📦</div><p>No products found</p></div></td></tr>`;
-  return products.map(p => `
+  return products.map(p => {
+    // প্রথম image দেখাও (images array থেকে অথবা পুরনো image field থেকে)
+    const firstImg = p.images?.[0]?.url || p.image;
+    return `
     <tr>
-      <td>${p.image ? `<img src="${p.image}" class="product-img" alt="${p.name}">` : `<div class="product-emoji">${p.icon||'📦'}</div>`}</td>
+      <td>
+        ${firstImg
+          ? `<img src="${firstImg}" class="product-img" alt="${p.name}">`
+          : `<div class="product-emoji">${p.icon||'📦'}</div>`}
+        ${p.images?.length > 1 ? `<div style="font-size:.7rem;color:#5a6a5a;text-align:center">${p.images.length} ছবি</div>` : ''}
+        ${p.video ? `<div style="font-size:.7rem;color:#1976d2;text-align:center">🎬 Video</div>` : ''}
+      </td>
       <td>
         <div style="font-weight:700">${p.name}</div>
         <div style="font-size:.75rem;color:#5a6a5a">ID: ${p._id?.slice(-8)}</div>
@@ -272,11 +314,29 @@ function renderProductRows(products) {
       <td><span style="font-weight:700;color:${p.stock==0?'#e74c3c':p.stock<=5?'#f39c12':'#27ae60'}">${p.stock}</span></td>
       <td><span class="badge ${p.stock==0?'badge-red':p.stock<=5?'badge-yellow':'badge-green'}">${p.stock==0?'❌ Out':p.stock<=5?'⚠️ Low':'✅ In Stock'}</span></td>
       <td>
-        <button class="btn-sm btn-info-sm" onclick="viewProduct(window._productMap['${p._id}'])" style="margin-right:4px">👁️ View</button>
+        <button class="btn-sm btn-info-sm" onclick="viewProduct(window._productMap['${p._id}'])" style="margin-right:4px">👁️</button>
+        <button class="btn-sm btn-warning-sm" onclick="editProduct('${p._id}')" style="margin-right:4px">✏️ Edit</button>
         <button class="btn-sm btn-danger-sm" onclick="deleteProduct('${p._id}','${p.name.replace(/'/g,"\\'")}')">🗑️</button>
       </td>
     </tr>
-  `).join('');
+  `}).join('');
+}
+
+// ✅ Edit বাটন click করলে form fill হয়ে যাবে
+function editProduct(id) {
+  const p = window._productMap[id];
+  if (!p) return;
+
+  const content = document.getElementById('pageContent');
+  // Page এর শুরুতে edit form বসাও
+  const editCard = document.createElement('div');
+  editCard.id = 'editFormWrapper';
+  editCard.innerHTML = getProductFormHTML(p);
+  content.insertBefore(editCard, content.firstChild);
+  content.scrollTop = 0;
+  window.scrollTo(0, 0);
+
+  document.getElementById('productForm').addEventListener('submit', submitProduct);
 }
 
 function filterProds() {
@@ -286,28 +346,57 @@ function filterProds() {
   document.getElementById('productsBody').innerHTML = renderProductRows(filtered);
 }
 
-function previewImg(input) {
-  if (input.files && input.files[0]) {
+// ✅ Multiple images preview
+function previewImages(input) {
+  const preview = document.getElementById('imagesPreview');
+  preview.innerHTML = '';
+  const files = Array.from(input.files).slice(0, 5);
+  files.forEach((file, i) => {
     const reader = new FileReader();
     reader.onload = e => {
-      document.getElementById('previewImg').src = e.target.result;
-      document.getElementById('imagePreview').style.display = 'block';
-      document.getElementById('uploadArea').style.borderColor = '#1a6b2f';
+      preview.innerHTML += `
+        <div style="position:relative">
+          <img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #1a6b2f">
+          ${i === 0 ? '<span style="position:absolute;bottom:2px;left:2px;background:#1a6b2f;color:#fff;font-size:.6rem;padding:1px 4px;border-radius:4px">Main</span>' : ''}
+        </div>`;
     };
-    reader.readAsDataURL(input.files[0]);
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('uploadArea').style.borderColor = '#1a6b2f';
+}
+
+// ✅ Video preview
+function previewVideo(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    if (file.size > 100 * 1024 * 1024) {
+      showToast('Video 100MB এর বেশি হতে পারবে না!', 'error');
+      input.value = '';
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    document.getElementById('videoPreview').src = url;
+    document.getElementById('videoPreviewBox').style.display = 'block';
+    document.getElementById('videoUploadArea').style.borderColor = '#1976d2';
   }
 }
 
-function clearImg() {
-  document.getElementById('p-image').value = '';
-  document.getElementById('imagePreview').style.display = 'none';
-  document.getElementById('uploadArea').style.borderColor = '#b0d0b0';
+function clearVideo() {
+  document.getElementById('p-video').value = '';
+  document.getElementById('videoPreviewBox').style.display = 'none';
+  document.getElementById('videoUploadArea').style.borderColor = '#b0d0b0';
 }
 
+// ✅ Product submit — Add ও Edit দুটো handle করে
 async function submitProduct(e) {
   e.preventDefault();
+  const editId = document.getElementById('p-edit-id')?.value;
+  const isEdit = !!editId;
+
   const btn = document.getElementById('addProductBtn');
-  btn.innerHTML = '⏳ Adding...'; btn.disabled = true;
+  btn.innerHTML = isEdit ? '⏳ Saving...' : '⏳ Adding...';
+  btn.disabled = true;
+
   try {
     const formData = new FormData();
     formData.append('name', document.getElementById('p-name').value);
@@ -320,19 +409,51 @@ async function submitProduct(e) {
     formData.append('isFeatured', document.getElementById('p-featured').checked);
     formData.append('isNew', document.getElementById('p-new').checked);
     formData.append('freeShipping', document.getElementById('p-freeship').checked);
-    const img = document.getElementById('p-image').files[0];
-    if (img) formData.append('image', img);
-    const res = await fetch(`${API}/api/products`, {method:'POST', body:formData});
+
+    // ✅ Multiple images
+    const imgs = document.getElementById('p-images').files;
+    for (const img of imgs) {
+      formData.append('images', img);
+    }
+
+    // ✅ Video
+    const vid = document.getElementById('p-video').files[0];
+    if (vid) formData.append('video', vid);
+
+    const url = isEdit ? `${API}/api/products/${editId}` : `${API}/api/products`;
+    const method = isEdit ? 'PUT' : 'POST';
+
+    const res = await fetch(url, { method, body: formData });
     const data = await res.json();
-    if (data.success) { showToast('Product added! ✅'); resetProductForm(); loadProducts(); }
-    else { showToast('Error: ' + data.error, 'error'); }
-  } catch(err) { showToast('Server error!', 'error'); }
-  finally { btn.innerHTML = '➕ Add Product'; btn.disabled = false; }
+
+    if (data.success) {
+      showToast(isEdit ? 'Product updated! ✅' : 'Product added! ✅');
+      loadProducts();
+    } else {
+      showToast('Error: ' + data.error, 'error');
+      btn.innerHTML = isEdit ? '💾 Save Changes' : '➕ Add Product';
+      btn.disabled = false;
+    }
+  } catch(err) {
+    showToast('Server error!', 'error');
+    btn.innerHTML = isEdit ? '💾 Save Changes' : '➕ Add Product';
+    btn.disabled = false;
+  }
 }
 
 function resetProductForm() {
   document.getElementById('productForm').reset();
-  clearImg();
+  document.getElementById('imagesPreview').innerHTML = '';
+  document.getElementById('videoPreviewBox').style.display = 'none';
+  document.getElementById('uploadArea').style.borderColor = '#b0d0b0';
+}
+
+function showAddProductForm() {
+  const card = document.getElementById('addProductCard');
+  if (card) {
+    card.style.display = 'block';
+    card.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 async function deleteProduct(id, name) {
@@ -348,9 +469,26 @@ async function deleteProduct(id, name) {
 function viewProduct(p) {
   if (!p) return;
   const discount = p.originalPrice > p.price ? Math.round((1 - p.price/p.originalPrice)*100) : 0;
+  const allImgs = p.images?.length ? p.images : (p.image ? [{url:p.image}] : []);
   document.getElementById('modalContent').innerHTML = `
     <button class="modal-close" onclick="closeModal()">✕</button>
-    ${p.image ? `<img src="${p.image}" style="width:100%;height:220px;object-fit:cover;border-radius:12px;border:2px solid #e0e8e0;margin-bottom:14px">` : `<div style="height:180px;background:#f0f7f0;display:flex;align-items:center;justify-content:center;font-size:7rem;border-radius:12px;margin-bottom:14px">${p.icon||'📦'}</div>`}
+
+    <!-- Images gallery -->
+    ${allImgs.length ? `
+      <div style="display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:6px">
+        ${allImgs.map((img,i) =>
+          `<img src="${img.url}" style="width:${allImgs.length===1?'100%':'120px'};height:${allImgs.length===1?'220px':'90px'};object-fit:cover;border-radius:10px;border:2px solid #e0e8e0;flex-shrink:0">`
+        ).join('')}
+      </div>
+    ` : `<div style="height:180px;background:#f0f7f0;display:flex;align-items:center;justify-content:center;font-size:7rem;border-radius:12px;margin-bottom:14px">${p.icon||'📦'}</div>`}
+
+    <!-- Video -->
+    ${p.video ? `
+      <div style="margin-bottom:14px">
+        <video src="${p.video}" controls style="width:100%;max-height:200px;border-radius:10px;border:2px solid #e0e8e0"></video>
+      </div>
+    ` : ''}
+
     <div style="font-size:.72rem;color:#1a6b2f;font-weight:700;text-transform:uppercase;letter-spacing:.5px">${p.category}</div>
     <h2 style="font-size:1.25rem;font-weight:800;margin:6px 0">${p.name}</h2>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
@@ -363,8 +501,8 @@ function viewProduct(p) {
     </div>
     ${p.description ? `<p style="font-size:.88rem;color:#5a6a5a;line-height:1.7;background:#f8faf8;padding:12px;border-radius:9px;margin-bottom:14px">${p.description}</p>` : ''}
     <div style="display:flex;gap:8px">
-      <button class="btn btn-primary" style="flex:1" onclick="closeModal()">Close</button>
-      <button class="btn" style="background:#fde8e8;color:#e74c3c;font-weight:700" onclick="if(confirm('Delete?')){deleteProduct('${p._id}','${p.name.replace(/'/g,"\\'")}');closeModal()}">🗑️ Delete</button>
+      <button class="btn btn-primary" style="flex:1" onclick="closeModal();editProduct('${p._id}')">✏️ Edit</button>
+      <button class="btn" style="background:#fde8e8;color:#e74c3c;font-weight:700" onclick="if(confirm('Delete?')){deleteProduct('${p._id}','${p.name.replace(/'/g,"\\'")}');closeModal()}">🗑️</button>
     </div>
   `;
   document.getElementById('modalOverlay').classList.add('show');

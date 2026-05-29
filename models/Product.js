@@ -7,8 +7,23 @@ const productSchema = new mongoose.Schema({
   category: { type: String, required: true },
   description: { type: String },
   icon: { type: String, default: '📦' },
+
+  // ✅ Single image (পুরনো data এর জন্য রাখা হয়েছে)
   image: { type: String },
   imagePublicId: { type: String },
+
+  // ✅ Multiple images (নতুন)
+  images: [
+    {
+      url: { type: String },
+      publicId: { type: String },
+    }
+  ],
+
+  // ✅ Video (নতুন)
+  video: { type: String },
+  videoPublicId: { type: String },
+
   stock: { type: Number, default: 0 },
   sold: { type: Number, default: 0 },
   rating: { type: Number, default: 4.0 },
