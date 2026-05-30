@@ -12,8 +12,8 @@ const App = {
   exchangeRate: 110,
 
   formatPrice(usd) {
-    if (this.state.currency === 'BDT') return '৳' + Math.round(usd * this.exchangeRate).toLocaleString('en-BD');
-    return '$' + usd.toFixed(2);
+    if (this.state.currency === 'BDT') return '৳' + Math.round(usd).toLocaleString('en-BD');
+    return '$' + (usd / this.exchangeRate).toFixed(2);
   },
 
   categories: [
@@ -65,7 +65,7 @@ const App = {
           isFlash: i < 6, isTrending: i % 3 === 0,
           isFeatured: p.isFeatured === 'true' || p.isFeatured === true,
           isNew: p.isNew === 'true' || p.isNew === true,
-          freeShipping: p.freeShipping === 'true' || p.freeShipping === true || Number(p.price) > 45,
+          freeShipping: p.freeShipping === 'true' || p.freeShipping === true || Number(p.price) > 5000,
         }));
       } else {
         if (lsText) lsText.textContent = 'Loading local data...';
