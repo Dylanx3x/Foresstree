@@ -118,3 +118,20 @@ tr:hover td { background: #f8faf8; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .mobile-toggle { display: inline-flex; }
 }
+
+
+
+.btn-warning-sm {
+  background: #fff3e0;
+  color: #e67e22;
+  border: 1px solid #f39c12;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-warning-sm:hover {
+  background: #ffe0b2;
+}
